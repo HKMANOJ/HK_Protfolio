@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" id="themeStylesheet">
+  <title>Portfolio</title>
+  <button id="toggleMode">Dark-Mode</button>
+  <script src="script.js"></script>
+</head>
+
+<body>
+ 
+  <header>
+    <h1 class="me">H K MANOJ</h1>
+    <p class="me2">Backend Developer</p>
+    <div class="header-content">
+      <img src="/FrontEnd/manojpotfolio/1633191035954.jpg" alt="Profile Picture" class="profile-picture">
+    </div>
+    <div class="nav">
+    <nav>
+        <ul class="navbar">
+          <li><a href="https://hkmanoj.github.io/HK_Protfolio/">Home</a></li>
+          <li><a href="#about-me" onclick="toggleContent('content')">About Me</a></li>
+          <li><a href="#skills" onclick="toggleContent('skills-content')">Skills</a></li>
+          <li><a href="#project" onclick="toggleContent('project')">Projects</a></li>
+
+        </ul>
+      </nav>
+    </div>
+  </header>
+ 
+  <section style="list-style: none; padding: 0; margin: 0;">
+    <h2>Professional Experience</h2>
+  
+    <article>
+      <h3>Assistant System Engineer, Tata Consultancy Services</h3>
+      <p><strong>Company:</strong> Tata Consultancy Services</p>
+      <p><strong>Location:</strong> Bangalore</p>
+      <p><em>2023 – present</em></p>
+  
+      <p>Served as a vital contributor to Retail Company, a prominent retail establishment headquartered in the Middle East. Played a pivotal role in enhancing operational efficiency and customer service through the implementation of cutting-edge automation solutions.</p>
+  
+      <h4>Responsibilities:</h4>
+      <ul style="list-style: none; padding: 0; margin: 0;"></ul>
+        <li>Developed a bilingual intelligent chatbot capable of conversing fluently in both English and Arabic, enhancing user engagement and accessibility.</li>
+        <li>Implemented and optimized multiple business logic modules within the chatbot, leading to a 30% reduction in customer support issues and a 15% increase in overall customer engagement.</li>
+        <li>Automated critical processes, including report generation and chatbot training, leading to a reduction in manual workload and increased operational efficiency.</li>
+        <li>Designed and implemented a live status display module for a help desk portal using the Django framework, providing real-time information to support teams and improving incident resolution times.</li>
+      </ul><br><br>
+      <br><br>
+      <p><strong>Technology:</strong> Python, HTML, CSS, Django, Microsoft Excel, Apache Server, Rest APIs, JavaScript, Java</p>
+    </article>
+  
+    <article>
+      <h3>Associate Software Engineer, Virtusa</h3>
+      <p><strong>Company:</strong> Virtusa</p>
+      <p><strong>Location:</strong> Chennai</p>
+      <p><em>Date of Employment</em></p>
+  
+      <p>Worked for the European Investment Bank, the lending arm of the European Union—the most prominent multilateral financial institution in the world and one of the largest providers of climate finance.</p>
+  
+      <h4>Responsibilities:</h4>
+      <ul style="list-style: none; padding: 0; margin: 0;"></ul>
+        <li>Engineered modern applications by developing multiple REST APIs using Java, ensuring high performance and reliability.</li>
+        <li>Designed and implemented a robust database schema, establishing relations between tables, and defining constraints and sequences to optimize data storage and retrieval.</li>
+        <li>Orchestrated the development and seamless integration of six inbound interfaces, streamlining data transfer between the application and independent systems; reduced data processing time by 50% and eliminated manual data entry errors.</li>
+        <li>Collaborated closely with QA analysts to troubleshoot issues, ensuring software quality and a smooth user experience.</li>
+        <li>Developed a REST API to efficiently process data from the database to the REST service, enhancing data accessibility and system efficiency.</li>
+        <li>Utilized JSON for seamless data exchange between web requests and servers, optimizing data communication.</li>
+        <li>Employed Maven for efficient project build management and Log4j for generating detailed log files, enabling effective debugging and monitoring.</li>
+        <li>Demonstrated proficiency in code versioning tools, such as Git, to maintain and track code changes effectively.</li>
+        <li>Worked with both standalone databases and cloud-hosted databases, leveraging MySQL to manage and optimize data storage and retrieval.</li>
+      </ul>
+      <br><br>
+      <br><br>
+      <br><br>
+      <br><br>
+      <br><br>
+      <p><strong>Technology:</strong> Java, MySQL, Maven, Spring Boot</p>
+    </article>
+  </section>
+  <br><br>
+  <br><br>
+  <div id="content" style="display: none;" class="toggle-content">
+    <h4>About Me:</h4>
+  <p>
+    My name is Manoj, and I am a skilled Java Full Stack Developer with 1.8 years of professional experience.
+    I have a strong foundation in Java development and have successfully cleared the Oracle Certified Associate, Java SE 8 Programmer exam, showcasing my proficiency in the Java programming language.
+
+    Throughout my career, I have honed my skills in both front-end and back-end development, allowing me to work seamlessly across the entire software development lifecycle.
+    On the front-end, I am proficient in HTML, CSS, and JavaScript, and have experience in developing responsive and user-friendly web applications.
+    I have expertise in frameworks like Angular and React, enabling me to build dynamic and interactive user interfaces.
+
+    On the back-end, I excel in Java programming, utilizing frameworks such as Spring and Hibernate to create robust and scalable applications.
+    I have a deep understanding of database management systems, including SQL, and have worked with Oracle databases extensively.
+    Additionally, I am familiar with RESTful APIs and have experience integrating various third-party services into applications.
+
+    In addition to my technical skills, I am a dedicated and detail-oriented professional.
+    I have a strong problem-solving aptitude and a passion for delivering high-quality solutions.
+    I am a quick learner and adapt easily to new technologies and frameworks, allowing me to stay up-to-date with the latest industry trends.
+
+    Overall, I am a Java Full Stack Developer with a solid foundation in Java programming, front-end development, and back-end development.
+    With my skills, certification, and professional experience, I am confident in my ability to contribute to the success of any software development project or team.
+  </p>
+
+  
+  <h4>Education:</h4>
+  <p>
+    Bachelor of Engineering In Electrical and Electronics Engineering,
+    Visvesvaraya Technological University, JNN College of Engineering
+    <br>
+    CGPA: 7.41
+  </p>
+  <h4>Certificates:</h4>
+    <li>Oracle Certified Associate, Java SE 8 Programmer</li>
+  </div>
+
+<div id="skills-content" class="toggle-content">
+  <h4>Skills:</h4>
+ <h1>hello</h1>
+</div>
+
+</body>
+</html>
