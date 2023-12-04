@@ -40,7 +40,7 @@ const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
 async function fetchProjects() {
   try {
-    const response = await fetch(`${corsProxy}https://github.com/HKMANOJ/HK_Protfolio/raw/main/projects.json`);
+    const response = await fetch(`${corsProxy}/HKMANOJ/HK_Protfolio/main/projects.json`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
