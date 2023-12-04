@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch projects from projects.js and display them
     fetchProjects();
   });
-  
+  let isDarkMode = false;
+
+
   async function fetchProjects() {
     try {
       const response = await fetch('projects.json');
@@ -14,20 +16,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function displayProjects(projects) {
-    const projectsList = document.getElementById('projects-list');
+    const projectsList = document.getElementById('project-content');
     projects.forEach(project => {
       const projectElement = createProjectElement(project);
       projectsList.appendChild(projectElement);
     });
   }
-  
+  if (isDarkMode) {
+    projectElement.classList.add('dark-mode');
+  }
+
+  // Conditionally set the background color for the GitHub link
+  const githubLinkStyle = isDarkMode ? 'background-color: transparent;' : 'background-color: white; padding: 10px; border-radius: 5px;';
   function createProjectElement(project) {
     const projectElement = document.createElement('div');
     projectElement.classList.add('project');
     projectElement.innerHTML = `
       <h3>${project.title}</h3>
       <p>${project.description}</p>
-      <a href="${project.github}" target="_blank">GitHub Repo</a>
+      <a href="${project.github}" target="_blank" style="${githubLinkStyle}">GitHub Repo</a>
     `;
     return projectElement;
   }
