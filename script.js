@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchProjects() {
     try {
-      const response = await fetch('projects.json');
+      const response = await fetch('https://github.com/HKMANOJ/HK_Protfolioprojects.json');
       const projects = await response.json();
       displayProjects(projects);
     } catch (error) {
