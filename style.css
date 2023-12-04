@@ -4,6 +4,14 @@ body {
     padding: 0;
     background-color: #f4f4f4;
   }
+  @media only screen and (max-width: 768px) {
+    /* Adjustments for smaller screens */
+    body {
+      font-size: 14px; /* Adjust font size for better readability on smaller screens */
+    }
+  
+    /* Add more styles for smaller screens as needed */
+  }
 
   header {
     background-color: #333;
@@ -216,10 +224,76 @@ body {
     font-weight: bold;
     font-size: 16px; /* Adjust the font size as needed */
   }
-  #content, #skills-content {
+  #content, #skills-content , #project-content{
     display: none;
   }
  
 
+
+.skills-section {
+    display: flex;
+    padding: 10px;
+}
+
+.skill {
+    text-align: center;
+    max-width: 300px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.skill img {
+    max-width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Your existing CSS styles go here */
+
+/* Styles for larger screens (e.g., desktops and laptops) */
+@media only screen and (min-width: 768px) {
+  body {
+    font-size: 16px; /* Adjust font size for better readability on larger screens */
+    /* Add more styles for larger screens as needed */
+  }
+
+  /* Header styles for larger screens */
+  header {
+    padding: 20px;
+  }
+
+  /* Navigation styles for larger screens */
+  
+
+  /* Project article styles for larger screens */
+  article {
+    margin-bottom: 30px;
+  }
+}
+
+/* Styles for smaller screens (e.g., tablets and mobile devices) */
+@media only screen and (max-width: 767px) {
+  body {
+    font-size: 14px; /* Adjust font size for better readability on smaller screens */
+    /* Add more styles for smaller screens as needed */
+  }
+
+  /* Header styles for smaller screens */
+  header {
+    padding: 10px;
+  }
+
+  /* Navigation styles for smaller screens */
+
+
+  /* Project article styles for smaller screens */
+  article {
+    margin-bottom: 20px;
+  }
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 
   
