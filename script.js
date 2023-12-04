@@ -36,47 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
-async function fetchProjects() {
-  try {
-    const response = await fetch(`${corsProxy}https://raw.githubusercontent.com//HKMANOJ/HK_Protfolio/main/projects.json`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const projects = await response.json();
-    console.log('Fetched projects:', projects);
-    displayProjects(projects);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-  }
-}
-
-
-function displayProjects(projects) {
-  const projectsList = document.getElementById('project-content');
-  projects.forEach(project => {
-    const projectElement = createProjectElement(project);
-    projectsList.appendChild(projectElement);
-  });
-}
-
-function createProjectElement(project) {
-  const projectElement = document.createElement('div');
-  projectElement.classList.add('project');
-
-  // Conditionally set the background color for the GitHub link
-  const githubLinkStyle = document.body.classList.contains('dark-mode') ? 'background-color: transparent;' : 'background-color: white; padding: 10px; border-radius: 5px;';
-
-  projectElement.innerHTML = `
-    <h3>${project.title}</h3>
-    <p>${project.description}</p>
-    <a href="${project.github}" target="_blank" style="${githubLinkStyle}">GitHub Repo</a>
-  `;
-  return projectElement;
-}
 
 function toggleContent(contentId) {
   var content = document.getElementById(contentId);
