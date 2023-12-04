@@ -36,9 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+const corsProxy = 'https://cors-anywhere.herokuapp.com/';
+
 async function fetchProjects() {
   try {
-    const response = await fetch('https://raw.githubusercontent.com/HKMANOJ/HK_Protfolio/main/projects.json');
+    const response = await fetch(`${corsProxy}https://github.com/HKMANOJ/HK_Protfolio/raw/main/projects.json`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
