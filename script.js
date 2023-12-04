@@ -38,13 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function fetchProjects() {
   try {
-    const response = await fetch('projects.json');
+    const response = await fetch('https://raw.githubusercontent.com/HKMANOJ/HK_Protfolio/main/projects.json');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
     const projects = await response.json();
+    console.log('Fetched projects:', projects);
     displayProjects(projects);
   } catch (error) {
     console.error('Error fetching projects:', error);
   }
 }
+
 
 function displayProjects(projects) {
   const projectsList = document.getElementById('project-content');
