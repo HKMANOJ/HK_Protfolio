@@ -23,6 +23,10 @@ header {
   box-sizing: content-box;
 
 }
+.trans{
+  
+}
+
 
 .header-content {
   display: flex;
