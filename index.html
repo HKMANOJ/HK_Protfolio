@@ -1,239 +1,640 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css" id="themeStylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H K Manoj — Senior Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;
+  --surface:#0d1117;
+  --surface2:#131920;
+  --border:#1e2d3d;
+  --accent:#00d9a6;
+  --accent2:#0099ff;
+  --accent3:#ff6b35;
+  --text:#e6edf3;
+  --muted:#7d8fa3;
+  --mono:'Space Mono',monospace;
+  --sans:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;cursor:none}
 
+/* CURSOR */
+#cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform .1s,opacity .2s;mix-blend-mode:difference}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transition:transform .15s ease,width .2s,height .2s,opacity .2s;opacity:.4}
+body:hover #cursor{opacity:1}
 
-  <title>H K MANOJ</title>
-  <button id="toggleMode">Dark-Mode</button>
-  <script src="script.js"></script>
+/* CANVAS BG */
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:.35}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 4rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+nav.scrolled{background:rgba(8,12,16,.85);border-bottom-color:var(--border)}
+.nav-logo{font-family:var(--mono);font-size:.85rem;color:var(--accent);letter-spacing:.05em}
+.nav-logo span{color:var(--muted)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:.75rem;color:var(--muted);text-decoration:none;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s}
+.nav-links a:hover{color:var(--accent)}
+.nav-links a:hover::after{width:100%}
+
+/* SECTIONS */
+section{position:relative;z-index:1}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;padding:0 4rem;padding-top:6rem}
+.hero-inner{max-width:900px}
+.hero-tag{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem}
+.hero-tag::before{content:'';width:40px;height:1px;background:var(--accent)}
+.hero-name{font-size:clamp(3rem,8vw,7rem);font-weight:800;line-height:.95;letter-spacing:-.02em;margin-bottom:1.5rem}
+.hero-name .line1{display:block;color:var(--text)}
+.hero-name .line2{display:block;color:var(--accent);position:relative}
+.hero-name .line2::after{content:'_';animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-desc{font-family:var(--mono);font-size:.9rem;color:var(--muted);line-height:1.8;max-width:560px;margin-bottom:2.5rem}
+.hero-desc .highlight{color:var(--accent2)}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#000;font-family:var(--mono);font-size:.8rem;font-weight:700;padding:.85rem 2rem;border:none;letter-spacing:.08em;text-transform:uppercase;cursor:none;text-decoration:none;transition:transform .2s,box-shadow .2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,217,166,.3)}
+.btn-outline{background:transparent;color:var(--accent);font-family:var(--mono);font-size:.8rem;padding:.85rem 2rem;border:1px solid var(--accent);letter-spacing:.08em;text-transform:uppercase;cursor:none;text-decoration:none;transition:all .2s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.btn-outline:hover{background:rgba(0,217,166,.08);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:3rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-item{display:flex;flex-direction:column;gap:.3rem}
+.stat-num{font-size:2rem;font-weight:800;color:var(--accent);line-height:1}
+.stat-label{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* SECTION COMMON */
+.section-wrap{padding:7rem 4rem;max-width:1100px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:.7rem;color:var(--accent);letter-spacing:.2em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem}
+.section-label::before{content:'';width:24px;height:1px;background:var(--accent)}
+.section-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.02em;margin-bottom:3rem}
+
+/* SKILLS */
+#skills{background:linear-gradient(180deg,var(--bg) 0%,var(--surface) 100%)}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.skill-category{background:var(--surface2);border:1px solid var(--border);padding:1.75rem;transition:border-color .3s,transform .3s}
+.skill-category:hover{border-color:var(--accent);transform:translateY(-3px)}
+.skill-cat-title{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem}
+.skill-cat-title svg{width:14px;height:14px}
+.skill-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.skill-tag{font-family:var(--mono);font-size:.72rem;padding:.35rem .8rem;border:1px solid var(--border);color:var(--muted);transition:all .2s;letter-spacing:.04em}
+.skill-tag:hover,.skill-tag.active{border-color:var(--accent);color:var(--accent);background:rgba(0,217,166,.06)}
+.skill-tag.aws{border-color:rgba(0,153,255,.4);color:var(--accent2)}
+.skill-tag.devops{border-color:rgba(255,107,53,.4);color:var(--accent3)}
+
+/* EXPERIENCE */
+#experience{background:var(--surface)}
+.timeline{position:relative}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent)}
+.exp-item{padding-left:2.5rem;margin-bottom:3.5rem;position:relative;opacity:0;transform:translateX(-20px);transition:opacity .6s,transform .6s}
+.exp-item.visible{opacity:1;transform:translateX(0)}
+.exp-item::before{content:'';position:absolute;left:-4px;top:6px;width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent)}
+.exp-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.5rem;flex-wrap:wrap}
+.exp-role{font-size:1.2rem;font-weight:700;color:var(--text)}
+.exp-period{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.08em;padding:.3rem .75rem;border:1px solid rgba(0,217,166,.3);white-space:nowrap}
+.exp-company{font-family:var(--mono);font-size:.78rem;color:var(--accent2);letter-spacing:.05em;margin-bottom:1rem}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.exp-bullets li{font-family:var(--mono);font-size:.78rem;color:var(--muted);line-height:1.7;padding-left:1.2rem;position:relative}
+.exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:.65rem}
+.exp-metrics{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.metric-badge{font-family:var(--mono);font-size:.68rem;padding:.3rem .7rem;background:rgba(0,217,166,.06);border:1px solid rgba(0,217,166,.2);color:var(--accent);letter-spacing:.04em}
+
+/* PROJECTS */
+#projects{background:var(--bg)}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+.project-card{background:var(--surface);border:1px solid var(--border);padding:1.75rem;transition:all .3s;position:relative;overflow:hidden;opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s,border-color .3s}
+.project-card.visible{opacity:1;transform:translateY(0)}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.project-card:hover{border-color:rgba(0,217,166,.4);transform:translateY(-4px) !important}
+.project-card:hover::before{transform:scaleX(1)}
+.project-num{font-family:var(--mono);font-size:.7rem;color:var(--border);font-weight:700;margin-bottom:1rem;letter-spacing:.1em}
+.project-title{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:var(--text)}
+.project-desc{font-family:var(--mono);font-size:.75rem;color:var(--muted);line-height:1.7;margin-bottom:1.25rem}
+.project-tech{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
+.tech-pill{font-family:var(--mono);font-size:.65rem;padding:.25rem .6rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);letter-spacing:.04em}
+.project-link{font-family:var(--mono);font-size:.72rem;color:var(--accent);text-decoration:none;letter-spacing:.08em;display:flex;align-items:center;gap:.4rem;transition:gap .2s}
+.project-link:hover{gap:.7rem}
+.project-link::after{content:'→'}
+
+/* ACHIEVEMENTS */
+#achievements{background:var(--surface)}
+.achieve-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.achieve-card{background:var(--surface2);border:1px solid var(--border);padding:1.5rem;text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.achieve-card::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(0,217,166,.08),transparent 70%);opacity:0;transition:opacity .3s}
+.achieve-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.achieve-card:hover::after{opacity:1}
+.achieve-icon{font-size:1.8rem;margin-bottom:.75rem}
+.achieve-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.achieve-sub{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+
+/* SOCIAL / CONTENT */
+#content{background:var(--bg)}
+.content-cards{display:flex;gap:1.5rem;flex-wrap:wrap}
+.social-card{flex:1;min-width:240px;background:var(--surface);border:1px solid var(--border);padding:2rem;display:flex;flex-direction:column;gap:.75rem;transition:all .3s;text-decoration:none}
+.social-card:hover{border-color:var(--accent);transform:translateY(-3px)}
+.social-icon{width:40px;height:40px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
+.social-name{font-size:1rem;font-weight:700;color:var(--text)}
+.social-handle{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.05em}
+.social-desc{font-family:var(--mono);font-size:.72rem;color:var(--muted);line-height:1.6}
+
+/* CONTACT */
+#contact{background:var(--surface);border-top:1px solid var(--border)}
+.contact-wrap{text-align:center;padding:6rem 4rem}
+.contact-wrap .section-label{justify-content:center}
+.contact-wrap .section-label::before{display:none}
+.contact-big{font-size:clamp(2.5rem,6vw,5rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1.5rem;line-height:1}
+.contact-sub{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-bottom:2.5rem}
+.contact-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.contact-item{font-family:var(--mono);font-size:.78rem;color:var(--muted);padding:.6rem 1.25rem;border:1px solid var(--border);text-decoration:none;letter-spacing:.06em;transition:all .2s;display:flex;align-items:center;gap:.5rem}
+.contact-item:hover{border-color:var(--accent);color:var(--accent)}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+
+/* SCROLL INDICATOR */
+.scroll-hint{position:absolute;bottom:2.5rem;left:4rem;display:flex;align-items:center;gap:.75rem;font-family:var(--mono);font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;animation:float 3s ease-in-out infinite}
+.scroll-hint::before{content:'';width:1px;height:40px;background:linear-gradient(180deg,transparent,var(--muted))}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* NOISE OVERLAY */
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");opacity:.025;z-index:0;pointer-events:none}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{gap:1.5rem}
+  #hero{padding:0 1.5rem;padding-top:5rem}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+  .section-wrap{padding:4rem 1.5rem}
+  .skills-grid{grid-template-columns:1fr}
+  .contact-wrap{padding:4rem 1.5rem}
+  footer{padding:1.25rem 1.5rem;flex-direction:column;gap:.5rem;text-align:center}
+  .scroll-hint{left:1.5rem}
+}
+
+/* COUNTER ANIMATION */
+.counter{display:inline-block}
+</style>
 </head>
-
-
 <body>
 
-  <header>
-    <h1 class="me">H K MANOJ</h1>
-    <p class="me2">Backend Developer</p>
-    <div class="header-content">
-      <img src="15kb.jpg" alt="Profile Picture" class="profile-picture">
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo"><span>~/</span>hkmanoj</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Awards</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Senior Software Engineer</div>
+    <h1 class="hero-name">
+      <span class="line1">H K</span>
+      <span class="line2" id="typed-name">Manoj</span>
+    </h1>
+    <p class="hero-desc">
+      Building <span class="highlight">event-driven microservices</span> that scale.<br>
+      Java · Spring Boot · AWS · Kafka · Kubernetes<br>
+      4+ years shipping production systems at scale.
+    </p>
+    <div class="hero-btns">
+      <a href="#experience" class="btn-primary">View Work</a>
+      <a href="#contact" class="btn-outline">Get In Touch</a>
     </div>
-    <div class="nav">
-      <nav>
-        <ul class="navbar">
-          <li><a href="https://hkmanoj.github.io/HK_Protfolio/">Home</a></li>
-          <li><a href="#about-me" onclick="toggleContent('content')">About Me</a></li>
-          <li><a href="#skills" onclick="toggleContent('skills-content')">Skills</a></li>
-          <li><a href="#project" onclick="toggleContent('project-content')">Projects</a></li>
-          <li><a href="#contact" onclick="toggleContent('contact-content')">Contact</a></li>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num"><span class="counter" data-target="100">0</span>K+</span>
+        <span class="stat-label">Events / Day</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num"><span class="counter" data-target="99">0</span>.9%</span>
+        <span class="stat-label">Availability SLA</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num"><span class="counter" data-target="4">0</span>+</span>
+        <span class="stat-label">Years XP</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num"><span class="counter" data-target="85">0</span>%+</span>
+        <span class="stat-label">Test Coverage</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-wrap">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title">Skills & Technologies</h2>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          Core Backend
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag active">Java 8/11/17</span>
+          <span class="skill-tag active">Spring Boot</span>
+          <span class="skill-tag">Spring MVC</span>
+          <span class="skill-tag">Spring Security</span>
+          <span class="skill-tag">Hibernate</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">JDBC</span>
+          <span class="skill-tag">JUnit 5</span>
+          <span class="skill-tag">Mockito</span>
+          <span class="skill-tag">TDD</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title" style="color:var(--accent2)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Cloud & AWS
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag aws">Lambda</span>
+          <span class="skill-tag aws">ECS</span>
+          <span class="skill-tag aws">SQS</span>
+          <span class="skill-tag aws">EventBridge</span>
+          <span class="skill-tag aws">EC2</span>
+          <span class="skill-tag aws">S3</span>
+          <span class="skill-tag aws">RDS</span>
+          <span class="skill-tag aws">API Gateway</span>
+          <span class="skill-tag aws">DynamoDB</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title" style="color:var(--accent3)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          DevOps & Infra
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag devops">Docker</span>
+          <span class="skill-tag devops">Kubernetes</span>
+          <span class="skill-tag devops">Jenkins</span>
+          <span class="skill-tag devops">JFrog</span>
+          <span class="skill-tag devops">CI/CD</span>
+          <span class="skill-tag devops">Maven</span>
+          <span class="skill-tag devops">Blue-Green Deploy</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Data & Messaging
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag active">Kafka</span>
+          <span class="skill-tag active">Elasticsearch</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Oracle</span>
+          <span class="skill-tag">MongoDB</span>
+          <span class="skill-tag">Redis</span>
+          <span class="skill-tag active">Spring Batch</span>
+          <span class="skill-tag">Log4j</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-wrap">
+    <div class="section-label">Career</div>
+    <h2 class="section-title">Work Experience</h2>
+    <div class="timeline">
+
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Senior Associate Consultant</div>
+          <div class="exp-period">Mar 2025 — Present</div>
+        </div>
+        <div class="exp-company">⬡ Infosys · Bangalore, India</div>
+        <ul class="exp-bullets">
+          <li>Optimized Elasticsearch content indexing for a platform serving 5M+ medical research documents, cutting search query response time by 40%.</li>
+          <li>Designed event-driven architecture (AWS Lambda + EventBridge + SQS), eliminating manual intervention in 3 critical production pipelines — saving 20+ engineering hours/week.</li>
+          <li>Containerized 6+ microservices on Amazon ECS with blue-green deployment, reducing deployment failures by 50%.</li>
+          <li>Led Spring Boot 2.x → 3.x and Java 11 → 17 migration with zero-regression go-live; 15% improved GC performance via virtual threads.</li>
+          <li>Built a modular tool-calling AI agent using LLM-based GenAI, reducing boilerplate across 8+ microservices by 35%.</li>
         </ul>
-      </nav>
-    </div>
-  </header>
-
-  <section style="list-style: none; padding: 0; margin: 0;">
-    <h1>Professional Experience</h1>
-
-    <article>
-      <h3>Assistant System Engineer, Tata Consultancy Services</h3>
-      <p><strong>Company:</strong> Tata Consultancy Services</p>
-      <p><strong>Location:</strong> Bangalore</p>
-      <p><em>2023 – present</em></p>
-
-      <p>Served as a vital contributor to Retail Company, a prominent retail establishment headquartered in the Middle
-        East. Played a pivotal role in enhancing operational efficiency and customer service through the implementation
-        of cutting-edge automation solutions.</p>
-
-      <h4>Responsibilities:</h4>
-      <ul style="list-style: none; padding: 0; margin: 0;"></ul>
-      <li>Developed a bilingual intelligent chatbot capable of conversing fluently in both English and Arabic, enhancing
-        user engagement and accessibility.</li>
-      <li>Implemented and optimized multiple business logic modules within the chatbot, leading to a 30% reduction in
-        customer support issues and a 15% increase in overall customer engagement.</li>
-      <li>Automated critical processes, including report generation and chatbot training, leading to a reduction in
-        manual workload and increased operational efficiency.</li>
-      <li>Designed and implemented a live status display module for a help desk portal using the Django framework,
-        providing real-time information to support teams and improving incident resolution times.</li>
-      </ul><br><br>
-      <br><br>
-      <p><strong>Technology:</strong> Python, HTML, CSS, Django, Microsoft Excel, Apache Server, Rest APIs, JavaScript,
-        Java</p>
-    </article>
-
-    <article>
-      <h3>Associate Software Engineer, Virtusa</h3>
-      <p><strong>Company:</strong> Virtusa</p>
-      <p><strong>Location:</strong> Chennai</p>
-      <p><em>Dec/21-Dec/22</em></p>
-
-      <p>Worked for the European Investment Bank, the lending arm of the European Union—the most prominent multilateral
-        financial institution in the world and one of the largest providers of climate finance.</p>
-
-      <h4>Responsibilities:</h4>
-      <ul style="list-style: none; padding: 0; margin: 0;"></ul>
-      <li>Engineered modern applications by developing multiple REST APIs using Java, ensuring high performance and
-        reliability.</li>
-      <li>Designed and implemented a robust database schema, establishing relations between tables, and defining
-        constraints and sequences to optimize data storage and retrieval.</li>
-      <li>Orchestrated the development and seamless integration of six inbound interfaces, streamlining data transfer
-        between the application and independent systems; reduced data processing time by 50% and eliminated manual data
-        entry errors.</li>
-      <li>Collaborated closely with QA analysts to troubleshoot issues, ensuring software quality and a smooth user
-        experience.</li>
-      <li>Developed a REST API to efficiently process data from the database to the REST service, enhancing data
-        accessibility and system efficiency.</li>
-      <li>Utilized JSON for seamless data exchange between web requests and servers, optimizing data communication.</li>
-      <li>Employed Maven for efficient project build management and Log4j for generating detailed log files, enabling
-        effective debugging and monitoring.</li>
-      <li>Demonstrated proficiency in code versioning tools, such as Git, to maintain and track code changes
-        effectively.</li>
-      <li>Worked with both standalone databases and cloud-hosted databases, leveraging MySQL to manage and optimize data
-        storage and retrieval.</li>
-      </ul>
-      <br><br>
-      <br><br>
-      <br><br>
-      <br><br>
-      <br><br>
-      <p><strong>Technology:</strong> Java, MySQL, Maven, Spring Boot</p>
-    </article>
-  </section>
-  <br><br>
-  <br><br>
-  <div id="content" style="display: none;" class="toggle-content">
-    <h1>About Me:</h1>
-    <p>
-      My name is Manoj, and I am a skilled Java Full Stack Developer with 1.8 years of professional experience.
-      I have a strong foundation in Java development and have successfully cleared the Oracle Certified Associate, Java
-      SE 8 Programmer exam, showcasing my proficiency in the Java programming language.
-
-      Throughout my career, I have honed my skills in both front-end and back-end development, allowing me to work
-      seamlessly across the entire software development lifecycle.
-      On the front-end, I am proficient in HTML, CSS, and JavaScript, and have experience in developing responsive and
-      user-friendly web applications.
-      I have expertise in frameworks like Angular and React, enabling me to build dynamic and interactive user
-      interfaces.
-
-      On the back-end, I excel in Java programming, utilizing frameworks such as Spring and Hibernate to create robust
-      and scalable applications.
-      I have a deep understanding of database management systems, including SQL, and have worked with Oracle databases
-      extensively.
-      Additionally, I am familiar with RESTful APIs and have experience integrating various third-party services into
-      applications.
-
-      In addition to my technical skills, I am a dedicated and detail-oriented professional.
-      I have a strong problem-solving aptitude and a passion for delivering high-quality solutions.
-      I am a quick learner and adapt easily to new technologies and frameworks, allowing me to stay up-to-date with the
-      latest industry trends.
-
-      Overall, I am a Java Full Stack Developer with a solid foundation in Java programming, front-end development, and
-      back-end development.
-      With my skills, certification, and professional experience, I am confident in my ability to contribute to the
-      success of any software development project or team.
-    </p>
-
-
-    <h4>Education:</h4>
-    <p>
-      Bachelor of Engineering In Electrical and Electronics Engineering,
-      Visvesvaraya Technological University, JNN College of Engineering
-      <br>
-      CGPA: 7.41
-    </p>
-    <h4>Certificates:</h4>
-    <li>Oracle Certified Associate, Java SE 8 Programmer</li><br>
-    <h3>languages:</h3>
-    <div class="skill" id="kannada">
-      <img src="kannada.jpeg" alt="kannada Logo">
-    </div>
-    <div class="skill" id="kannada">
-      <img src="english.jpeg" alt="kannada Logo">
-    </div>
-    <div class="skill" id="kannada">
-      <img src="hindi.jpeg" alt="kannada Logo">
-    </div>
-  </div>
-
-  <div id="skills-content" class="toggle-content" style="display: none;"></br>
-    <h1>Skills:</h1>
-    <div class="row">
-      <div class="skill" id="java">
-          <img src="Java-Logo.jpeg" alt="Java Logo">
+        <div class="exp-metrics">
+          <span class="metric-badge">40% faster search</span>
+          <span class="metric-badge">20+ hrs/week saved</span>
+          <span class="metric-badge">50% fewer deploy failures</span>
+          <span class="metric-badge">99.9% availability</span>
+        </div>
       </div>
 
-      <div class="skill" id="sql">
-          <img src="sql.jpeg" alt="SQL Logo">
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">System Engineer</div>
+          <div class="exp-period">Feb 2023 — Mar 2025</div>
+        </div>
+        <div class="exp-company">⬡ Tata Consultancy Services · Bangalore, India</div>
+        <ul class="exp-bullets">
+          <li>Architected ITSM Ticket Automation system with Spring Boot microservices + Kafka processing 10K+ events/day, cutting resolution time by 45%.</li>
+          <li>Developed core business logic for an AI-powered chatbot handling 500+ daily interactions, reducing per-sprint effort by 30%.</li>
+          <li>Automated report generation via REST API + Spring Batch — reduced 4 hours of weekly effort to under 30 minutes (87.5% reduction).</li>
+          <li>Awarded TCS Gems Award for ITSM Automation Architecture for measurable client impact.</li>
+        </ul>
+        <div class="exp-metrics">
+          <span class="metric-badge">45% faster resolution</span>
+          <span class="metric-badge">87.5% reporting effort cut</span>
+          <span class="metric-badge">TCS Gems Award 🏆</span>
+        </div>
       </div>
-  </div>
-  <div class="row">
-    <div class="skill" id="spring">
-        <img src="download.jpeg" alt="Spring" style="height: 100%;">
-    </div>
 
-    <div class="skill" id="hibernate">
-        <img src="66NFe2g3_400x400.jpeg" alt="Hibernate">
-    </div>
-</div>
-<div class="row">
-    <div class="skill" id="python">
-      <img src="python.jpeg" alt="python Logo">
-    </div>
-    <div class="skill" id="front">
-      <img src="htmlcssjs.jpeg" alt="front Logo">
-    </div>
-</div>
-<div class="row">
-    <div class="skill" id="git">
-      <img src="Git-logo.jpeg" alt="git Logo" style="height:80%;">
-    </div>
-    <div class="skill" id="jdbc">
-      <img src="jdbc.jpeg" alt="jdbc Logo">
-    </div>
-</div>
-<div class="row">
-    <div class="skill" id="postman">
-      <img src="postman-icon.jpeg" alt="postman Logo">
-    </div>
-    <div class="skill" id="springf">
-      <img src="spring-framework.jpeg" alt="spring-framework Logo">
-    </div>
-</div>
-    
-  </div>
-  </div>
-  
-  
-  <div id="project-content" class="toggle-content" style="display: none;">
-    <h1>Projects:</h1>
-    <div class="project">
-      <h2 class="trans">FruiteShop </h2>
-      <p>Description: Created the Website Having one Admin where he can add any number of various items of fruits. He
-        can display on his website along with the amount per Kg where the visitor can see, and also the admin can manage
-        by adding or deleting the particular field.</p>
-      <p>Github: <a href="https://github.com/HKMANOJ/SpringProject_Crud" style="background-color: transparent;">Click here</a></p>
-    </div>
+      <div class="exp-item">
+        <div class="exp-header">
+          <div class="exp-role">Associate Software Engineer</div>
+          <div class="exp-period">Jun 2021 — Jan 2023</div>
+        </div>
+        <div class="exp-company">⬡ Virtusa · Chennai, India</div>
+        <ul class="exp-bullets">
+          <li>Delivered feature implementations across 6 Agile sprints with 100% on-time delivery and zero critical defects.</li>
+          <li>Built secure OTP-based Reset/Forgot Password workflows using Spring Security, reducing support tickets by ~25%.</li>
+          <li>Integrated Log4j with correlation IDs, reducing mean time to diagnose production issues from hours to under 15 minutes.</li>
+        </ul>
+        <div class="exp-metrics">
+          <span class="metric-badge">100% sprint delivery</span>
+          <span class="metric-badge">15 min avg. debug time</span>
+          <span class="metric-badge">25% fewer tickets</span>
+        </div>
+      </div>
 
-    <div class="project">
-      <h2 class="trans">VisitorManagment System</h2>
-      <p>Description: Created the website having two interacting portals Admin as well as a visitor where visitors can
-        add particular dates along with his/her details. These requests are visible in the admin portal where the admin
-        can only modify the details, and visitors should register and login to that site.</p>
-      <div>
-        <p>Github: <a href="https://github.com/yourusername/project2" style="background-color: transparent;">Click here</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-wrap">
+    <div class="section-label">Build</div>
+    <h2 class="section-title">Featured Projects</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-num">01 / GitHub</div>
+        <div class="project-title">ProductSearch Engine</div>
+        <div class="project-desc">Full-text product search engine leveraging Elasticsearch for high-performance indexing and querying. REST API backend built with Spring Boot.</div>
+        <div class="project-tech">
+          <span class="tech-pill">Java</span>
+          <span class="tech-pill">Spring Boot</span>
+          <span class="tech-pill">Elasticsearch</span>
+          <span class="tech-pill">REST API</span>
+        </div>
+        <a href="https://github.com/HKMANOJ/ProductSearch" class="project-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">02 / Infosys</div>
+        <div class="project-title">Event-Driven AWS Pipeline</div>
+        <div class="project-desc">Serverless event pipeline using Lambda + EventBridge + SQS that automated 3 critical production workflows, eliminating all manual intervention.</div>
+        <div class="project-tech">
+          <span class="tech-pill">AWS Lambda</span>
+          <span class="tech-pill">EventBridge</span>
+          <span class="tech-pill">SQS</span>
+          <span class="tech-pill">ECS</span>
+        </div>
+        <a href="#experience" class="project-link">See Details</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">03 / TCS</div>
+        <div class="project-title">ITSM Ticket Automation</div>
+        <div class="project-desc">Event-driven ITSM automation system processing 10K+ events/day with Kafka. Reduced ticket resolution time by 45% across production queues.</div>
+        <div class="project-tech">
+          <span class="tech-pill">Kafka</span>
+          <span class="tech-pill">Spring Boot</span>
+          <span class="tech-pill">Microservices</span>
+          <span class="tech-pill">MySQL</span>
+        </div>
+        <a href="#experience" class="project-link">See Details</a>
+      </div>
+
+      <div class="project-card">
+        <div class="project-num">04 / Infosys</div>
+        <div class="project-title">LLM Tool-Calling AI Agent</div>
+        <div class="project-desc">Modular AI agent framework using LLM-based GenAI that reduced boilerplate code across 8+ microservices by 35%, accelerating feature delivery.</div>
+        <div class="project-tech">
+          <span class="tech-pill">Java</span>
+          <span class="tech-pill">Spring Boot</span>
+          <span class="tech-pill">GenAI / LLM</span>
+          <span class="tech-pill">Tool Calling</span>
+        </div>
+        <a href="#experience" class="project-link">See Details</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-wrap">
+    <div class="section-label">Recognition</div>
+    <h2 class="section-title">Achievements & Certifications</h2>
+    <div class="achieve-grid">
+      <div class="achieve-card">
+        <div class="achieve-icon">🏆</div>
+        <div class="achieve-title">TCS Gems Award</div>
+        <div class="achieve-sub">ITSM Automation Architecture · 2024</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">☕</div>
+        <div class="achieve-title">Oracle Certified</div>
+        <div class="achieve-sub">Java SE 8 Programmer · 2022</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">☁️</div>
+        <div class="achieve-title">AWS Practitioner</div>
+        <div class="achieve-sub">Cloud Practitioner Essentials</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">⚡</div>
+        <div class="achieve-title">LeetCode 1427</div>
+        <div class="achieve-sub">Competitive Programming Rating</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">📐</div>
+        <div class="achieve-title">B.E. EEE</div>
+        <div class="achieve-sub">VTU · CGPA 7.41 · 2021</div>
       </div>
     </div>
   </div>
+</section>
 
-  <div id="contact-content" class="toggle-content" style="display: none;">
-    <h1>Contact Details:</h1>
-    <p>Email: <a href="mailto:hkmanoj66@gmail.com" style="background-color: transparent;">hkmanoj66@gmail.com</a></p>
-    <p>GitHub: <a href="https://github.com/HKMANOJ" target="_blank" style="background-color: transparent;">https://github.com/HKMANOJ</a></p>
-    <p>LinkedIn: <a href="https://www.linkedin.com/in/h-k-manoj-67466820b/" target="_blank" style="background-color: transparent;">https://www.linkedin.com/in/h-k-manoj-67466820b/</a></p>
-</div>
+<!-- CONTENT / SOCIAL -->
+<section id="content">
+  <div class="section-wrap">
+    <div class="section-label">Online</div>
+    <h2 class="section-title">Find Me Online</h2>
+    <div class="content-cards">
 
+      <a href="https://github.com/HKMANOJ" class="social-card" target="_blank">
+        <div class="social-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </div>
+        <div class="social-name">GitHub</div>
+        <div class="social-handle">@HKMANOJ</div>
+        <div class="social-desc">Open source projects and code samples. Check out ProductSearch and more.</div>
+      </a>
+
+      <a href="https://www.youtube.com/@Manoj_labs" class="social-card" target="_blank">
+        <div class="social-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff4444"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        </div>
+        <div class="social-name">YouTube</div>
+        <div class="social-handle">@Manoj_labs</div>
+        <div class="social-desc">Tech content, backend engineering insights, and hands-on Java/Spring tutorials.</div>
+      </a>
+
+      <a href="mailto:Hkmanoj66@gmail.com" class="social-card">
+        <div class="social-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        </div>
+        <div class="social-name">Email</div>
+        <div class="social-handle">Hkmanoj66@gmail.com</div>
+        <div class="social-desc">Best for collaborations, job opportunities, or just saying hello.</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="section-label">Let's Connect</div>
+    <h2 class="contact-big">Open to<br><span style="color:var(--accent)">new opportunities</span></h2>
+    <p class="contact-sub">Currently exploring Senior Software Engineer roles in Bangalore · Available for freelance projects</p>
+    <div class="contact-links">
+      <a href="mailto:Hkmanoj66@gmail.com" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        Hkmanoj66@gmail.com
+      </a>
+      <a href="tel:+918618510254" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        +91 86185 10254
+      </a>
+      <a href="https://github.com/HKMANOJ" target="_blank" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.youtube.com/@Manoj_labs" target="_blank" class="contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+        YouTube
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>H K Manoj · Senior Software Engineer · Bangalore, India</span>
+  <span style="color:var(--accent)">Built with code & caffeine ☕</span>
+</footer>
+
+<script>
+// --- CUSTOM CURSOR ---
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=(mx-6)+'px';cursor.style.top=(my-6)+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+  ring.style.left=(rx-18)+'px';ring.style.top=(ry-18)+'px';
+  requestAnimationFrame(animRing);
+}animRing();
+document.querySelectorAll('a,button,.skill-tag,.project-card,.achieve-card,.social-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='.7';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.opacity='.4';});
+});
+
+// --- GRID CANVAS BG ---
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,dots=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;dots=[];for(let i=0;i<80;i++)dots.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*2+1});}
+resize();window.addEventListener('resize',resize);
+function drawBg(){
+  ctx.clearRect(0,0,W,H);
+  // grid
+  ctx.strokeStyle='rgba(0,217,166,0.04)';ctx.lineWidth=.5;
+  const gsize=60;
+  for(let x=0;x<W;x+=gsize){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=gsize){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  // dots + connections
+  dots.forEach(d=>{
+    d.x+=d.vx;d.y+=d.vy;
+    if(d.x<0||d.x>W)d.vx*=-1;
+    if(d.y<0||d.y>H)d.vy*=-1;
+    ctx.beginPath();ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,217,166,0.5)';ctx.fill();
+  });
+  dots.forEach((a,i)=>{dots.slice(i+1).forEach(b=>{
+    const dist=Math.hypot(a.x-b.x,a.y-b.y);
+    if(dist<120){ctx.strokeStyle=`rgba(0,217,166,${0.12*(1-dist/120)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+  });});
+  requestAnimationFrame(drawBg);
+}drawBg();
+
+// --- NAV SCROLL ---
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>80);
+});
+
+// --- SCROLL REVEAL ---
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+document.querySelectorAll('.exp-item,.project-card').forEach(el=>observer.observe(el));
+
+// --- STAGGER PROJECT CARDS ---
+document.querySelectorAll('.project-card').forEach((c,i)=>{
+  c.style.transitionDelay=(i*.1)+'s';
+});
+
+// --- COUNTER ANIMATION ---
+function animateCounters(){
+  document.querySelectorAll('.counter').forEach(el=>{
+    const target=+el.dataset.target;
+    const dur=1500;const start=performance.now();
+    function tick(now){
+      const t=Math.min((now-start)/dur,1);
+      const ease=1-Math.pow(1-t,3);
+      el.textContent=Math.round(ease*target);
+      if(t<1)requestAnimationFrame(tick);
+      else el.textContent=target;
+    }requestAnimationFrame(tick);
+  });
+}
+const heroObs=new IntersectionObserver(([e])=>{if(e.isIntersecting){animateCounters();heroObs.disconnect();}},{threshold:.5});
+heroObs.observe(document.querySelector('.hero-stats'));
+
+// --- SKILL TAG INTERACTIVE ---
+document.querySelectorAll('.skill-tag').forEach(t=>{
+  t.addEventListener('click',()=>t.classList.toggle('active'));
+});
+</script>
 </body>
 </html>
